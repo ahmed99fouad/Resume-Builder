@@ -1,0 +1,44 @@
+﻿body {
+	background: linear-gradient(135deg, #4b6cb7, #182848);
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Poppins', sans-serif;
+	color: white;
+}
+
+.resume-container {
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	border-radius: 20px;
+	padding: 2rem;
+	width: 70%;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.resume-header {
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+
+.form-label {
+	font-weight: 600;
+	color: #ddd;
+}
+
+.form-control {
+	border-radius: 8px;
+	border: none;
+	padding: 10px;
+	font-size: 14px;
+}
+
+.btn-primary {
+	background: #ff7eb3;
+	border: none;
+	padding: 12px;
+	border-radius: 8px;
+	width: 100%;
+	font-weight: bold;
+}

@@ -1,58 +1,156 @@
-﻿@model Infrastructrer.Entities.Resume
+﻿ @model Infrastructrer.Entities.Resume
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Resume</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/Resume.css"> <!-- Link to external CSS file -->
 
-<h2>Create Your Resume</h2>
+    @* 
+    <style>
+        body {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+        }
 
-<form id="resumeForm">
-    <div>
-        <label>Full Name:</label>
-        <input asp-for="FullName" required />
-    </div>
-    <div>
-        <label>Email:</label>
-        <input asp-for="Email" type="email" required />
-    </div>
-    <div>
-        <label>Phone Number:</label>
-        <input asp-for="PhoneNumber" required />
-    </div>
-    <div>
-        <label>Education:</label>
-        <textarea asp-for="Education"></textarea>
-    </div>
-    <div>
-        <label>Work Experience:</label>
-        <textarea asp-for="WorkExperience"></textarea>
-    </div>
-    <div>
-        <label>Skills:</label>
-        <textarea asp-for="Skills"></textarea>
-    </div>
-    <div>
-        <label>Certifications:</label>
-        <textarea asp-for="Certifications"></textarea>
-    </div>
-    <button type="submit">Save Resume</button>
-</form>
+        .resume-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 70%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
 
-<script>
-    document.getElementById('resumeForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const resume = Object.fromEntries(formData.entries());
+        .resume-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
 
-        fetch('/api/Resume', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: JSON.stringify(resume)
-        }).then(response => {
-            if (response.ok) {
+        .form-label {
+            font-weight: 600;
+            color: #ddd;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #ff7eb3;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+        }
+    </style>
+ *@
+</head>
+<body>
+    <div class="container">
+        <div class="resume-container">
+            <div class="resume-header">
+                <h2>Create Your Resume</h2>
+            </div>
+            <form id="resumeForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input asp-for="FullName" class="form-control" placeholder="Enter your full name" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Education</label>
+                        <textarea asp-for="Education" class="form-control" placeholder="Enter your education details"></textarea>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Work Experience</label>
+                        <textarea asp-for="WorkExperience" class="form-control" placeholder="Enter your work experience"></textarea>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Skills</label>
+                        <textarea asp-for="Skills" class="form-control" placeholder="Enter your skills"></textarea>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Certifications</label>
+                        <textarea asp-for="Certifications" class="form-control" placeholder="Enter your certifications"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Resume</button>
+            </form>
+        </div>
+    </div>
+    <script>
+
+                document.getElementById('resumeForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const resume = Object.fromEntries(formData.entries());
+
+            fetch('/api/Resume', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') // Ensure token is available
+                },
+                body: JSON.stringify(resume)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to save resume.');
+                }
+            })
+            .then(data => {
                 alert('Resume saved successfully!');
-            } else {
-                alert('Failed to save resume.');
-            }
+                console.log('Saved Resume:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message);
+            });
         });
-    });
-</script>
+
+        // document.getElementById('resumeForm').addEventListener('submit', function (e) {
+        //     e.preventDefault();
+        //     const formData = new FormData(e.target);
+        //     const resume = Object.fromEntries(formData.entries());
+        //     fetch('/api/Resume', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'Authorization': 'Bearer ' + localStorage.getItem('token')
+        //         },
+        //         body: JSON.stringify(resume)
+        //     }).then(response => {
+        //         if (response.ok) {
+        //             alert('Resume saved successfully!');
+        //         } else {
+        //             alert('Failed to save resume.');
+        //         }
+        //     });
+        // });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
