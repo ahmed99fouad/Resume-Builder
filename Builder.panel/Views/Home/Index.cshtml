@@ -1,8 +1,58 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model Infrastructrer.Entities.Resume
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Create Your Resume</h2>
+
+<form id="resumeForm">
+    <div>
+        <label>Full Name:</label>
+        <input asp-for="FullName" required />
+    </div>
+    <div>
+        <label>Email:</label>
+        <input asp-for="Email" type="email" required />
+    </div>
+    <div>
+        <label>Phone Number:</label>
+        <input asp-for="PhoneNumber" required />
+    </div>
+    <div>
+        <label>Education:</label>
+        <textarea asp-for="Education"></textarea>
+    </div>
+    <div>
+        <label>Work Experience:</label>
+        <textarea asp-for="WorkExperience"></textarea>
+    </div>
+    <div>
+        <label>Skills:</label>
+        <textarea asp-for="Skills"></textarea>
+    </div>
+    <div>
+        <label>Certifications:</label>
+        <textarea asp-for="Certifications"></textarea>
+    </div>
+    <button type="submit">Save Resume</button>
+</form>
+
+<script>
+    document.getElementById('resumeForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const resume = Object.fromEntries(formData.entries());
+
+        fetch('/api/Resume', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(resume)
+        }).then(response => {
+            if (response.ok) {
+                alert('Resume saved successfully!');
+            } else {
+                alert('Failed to save resume.');
+            }
+        });
+    });
+</script>

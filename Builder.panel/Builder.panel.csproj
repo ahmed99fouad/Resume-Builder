@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructrer\Infrastructrer.csproj" />
+  </ItemGroup>
+
 </Project>
